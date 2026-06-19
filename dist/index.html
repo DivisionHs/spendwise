@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendWise - Dashboard</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <div class="min-h-screen md:flex">
+        
+        <nav class="bg-slate-900 text-slate-100 w-full md:w-64 p-6 space-y-6 md:fixed md:inset-y-0 md:left-0">
+            <div class="flex items-center space-x-2">
+                <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center font-bold text-slate-900">SW</div>
+                <span class="text-xl font-bold tracking-wider text-amber-500">SpendWise</span>
+            </div>
+            
+            <ul class="space-y-2">
+                <li>
+                    <a href="#" class="flex items-center space-x-3 px-4 py-2.5 bg-slate-800 text-amber-500 rounded-lg font-medium transition-colors">
+                        <span>📊</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center space-x-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-slate-100 rounded-lg font-medium transition-colors">
+                        <span>💸</span>
+                        <span>Transações</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center space-x-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-slate-100 rounded-lg font-medium transition-colors">
+                        <span>📈</span>
+                        <span>Investimentos</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center space-x-3 px-4 py-2.5 text-slate-400 hover:bg-slate-800 hover:text-slate-100 rounded-lg font-medium transition-colors">
+                        <span>⚙️</span>
+                        <span>Configurações</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="flex-1 md:ml-64 flex flex-col min-h-screen">
+            
+            <header class="bg-white border-b border-slate-200 h-16 flex items-center justify-between px-6 sticky top-0 z-10">
+                <h1 class="text-xl font-semibold text-slate-900">Dashboard</h1>
+                
+                <div class="flex items-center space-x-4">
+                    <button class="text-slate-500 hover:text-slate-700 relative p-1">
+                        <span>🔔</span>
+                        <span class="absolute top-0 right-0 w-2 h-2 bg-rose-500 rounded-full"></span>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-medium text-slate-700 leading-none">Davi Henrick</p>
+                            <p class="text-xs text-slate-400 mt-1">Premium</p>
+                        </div>
+                        <div class="w-9 h-9 bg-slate-200 rounded-full flex items-center justify-center font-semibold text-slate-600 border border-slate-300">
+                            DH
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="flex-1 p-6 space-y-6">
+                
+                <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 font-medium">Saldo Total</p>
+                            <h3 class="text-2xl font-bold text-slate-900 mt-1">R$ 14.250,00</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center text-xl">💰</div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 font-medium">Gastos Mensais</p>
+                            <h3 class="text-2xl font-bold text-slate-900 mt-1">R$ 3.840,50</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center text-xl">📉</div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 font-medium">Investimentos</p>
+                            <h3 class="text-2xl font-bold text-slate-900 mt-1">R$ 28.190,00</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center text-xl">📈</div>
+                    </div>
+
+                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-slate-500 font-medium">Alertas Ativos</p>
+                            <h3 class="text-2xl font-bold text-slate-900 mt-1">2 Avisos</h3>
+                        </div>
+                        <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-lg flex items-center justify-center text-xl">⚠️</div>
+                    </div>
+                </section>
+
+                <section class="bg-white border border-slate-200 rounded-xl shadow-sm">
+                    <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+                        <h2 class="font-semibold text-lg text-slate-900">Transações Recentes</h2>
+                        <a href="#" class="text-sm font-medium text-amber-600 hover:text-amber-700 transition-colors">Ver todas</a>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-slate-400 text-xs uppercase font-semibold tracking-wider border-b border-slate-100">
+                                    <th class="py-3 px-6">Descrição</th>
+                                    <th class="py-3 px-6">Categoria</th>
+                                    <th class="py-3 px-6">Data</th>
+                                    <th class="py-3 px-6 text-right">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-sm">
+                                <tr>
+                                    <td class="py-4 px-6 font-medium text-slate-900">Assinatura Cloud Hosting</td>
+                                    <td class="py-4 px-6 text-slate-500">Tecnologia</td>
+                                    <td class="py-4 px-6 text-slate-500">18/06/2026</td>
+                                    <td class="py-4 px-6 text-right font-semibold text-rose-600">- R$ 89,90</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-6 font-medium text-slate-900">Desenvolvimento de Software Freelance</td>
+                                    <td class="py-4 px-6 text-slate-500">Receitas</td>
+                                    <td class="py-4 px-6 text-slate-500">16/06/2026</td>
+                                    <td class="py-4 px-6 text-right font-semibold text-emerald-600">+ R$ 2.500,00</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-4 px-6 font-medium text-slate-900">Supermercado Carapicuíba</td>
+                                    <td class="py-4 px-6 text-slate-500">Alimentação</td>
+                                    <td class="py-4 px-6 text-slate-500">15/06/2026</td>
+                                    <td class="py-4 px-6 text-right font-semibold text-rose-600">- R$ 342,15</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+</body>
+</html>
