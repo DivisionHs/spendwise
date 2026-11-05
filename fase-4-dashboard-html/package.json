@@ -1,0 +1,16 @@
+{
+  "name": "spendwise",
+  "version": "1.0.0",
+  "description": "Dashboard para o projeto Fintech SpendWise",
+  "main": "index.html",
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -i ./src/input.css -o ./dist/css/styles.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.3.1",
+    "tailwindcss": "^4.3.1"
+  }
+}
