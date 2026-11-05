@@ -1,0 +1,119 @@
+### SpendWise: requisicoes da API para testar sem o frontend.
+### Use no IntelliJ (arquivos .http), no VS Code (extensao REST Client) ou copie para o Insomnia/Postman.
+### Backend em http://localhost:8080. Troque os ids pelos que existirem no seu banco.
+
+@base = http://localhost:8080/api
+
+### Login (200 com os dados do usuario, 401 se errar)
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "email": "teste@spendwise.com", "senha": "Teste@123" }
+
+### Resumo do usuario 1 (200)
+GET {{base}}/resumo/1
+
+### ---------- Usuarios ----------
+GET {{base}}/usuarios
+
+###
+POST {{base}}/usuarios
+Content-Type: application/json
+
+{ "nome": "Maria Souza", "email": "maria@exemplo.com", "senha": "abc12345", "cep": "01310-100" }
+
+### ---------- Receitas (GET, POST, PUT, DELETE) ----------
+GET {{base}}/receitas?idUsuario=1
+
+###
+POST {{base}}/receitas
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "valor": 5200.00, "data": "2026-11-05", "descricao": "Salario" }
+
+###
+PUT {{base}}/receitas/1
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "valor": 5300.00, "data": "2026-11-05", "descricao": "Salario reajustado" }
+
+###
+DELETE {{base}}/receitas/1
+
+### ---------- Despesas (com categoria: ALIMENTACAO, TRANSPORTE, MORADIA, LAZER, SAUDE, EDUCACAO, OUTROS) ----------
+GET {{base}}/despesas?idUsuario=1
+
+###
+POST {{base}}/despesas
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "valor": 342.15, "data": "2026-11-05", "descricao": "Supermercado", "categoria": "ALIMENTACAO" }
+
+### Despesa sem categoria: 400
+POST {{base}}/despesas
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "valor": 10, "data": "2026-11-05", "descricao": "Sem categoria" }
+
+### ---------- Contas bancarias ----------
+GET {{base}}/contas?idUsuario=1
+
+###
+POST {{base}}/contas
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "banco": "Banco do Brasil", "agencia": "1234-5", "numeroConta": "98765-4", "tipo": "CORRENTE", "saldo": 1000.00 }
+
+### ---------- Dividas (com pagamento parcial) ----------
+GET {{base}}/dividas?idUsuario=1
+
+###
+POST {{base}}/dividas
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "valor": 1200.00, "vencimento": "2026-12-20", "descricao": "Cartao de credito" }
+
+### Pagamento parcial da divida 1 (200); se o valor cobrir tudo, a divida fica quitada
+POST {{base}}/dividas/1/pagamentos
+Content-Type: application/json
+
+{ "valor": 500.00 }
+
+### ---------- Metas (com registro de progresso) ----------
+GET {{base}}/metas?idUsuario=1
+
+###
+POST {{base}}/metas
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "descricao": "Reserva de emergencia", "valorAlvo": 5000.00, "dataLimite": "2026-12-31" }
+
+###
+POST {{base}}/metas/1/progressos
+Content-Type: application/json
+
+{ "valor": 1200.00 }
+
+### ---------- Orcamentos por categoria (limite mensal) ----------
+GET {{base}}/orcamentos?idUsuario=1
+
+###
+POST {{base}}/orcamentos
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "categoria": "LAZER", "limite": 400.00 }
+
+### Situacao de cada orcamento no mes atual (gasto, restante, percentual, situacao)
+GET {{base}}/orcamentos/status?idUsuario=1
+
+### ---------- Investimentos e categorias ----------
+GET {{base}}/categorias-investimento
+
+###
+POST {{base}}/investimentos
+Content-Type: application/json
+
+{ "usuario": { "idUsuario": 1 }, "categoria": { "idCatInvest": 1 }, "valorInvestido": 600.00, "data": "2026-11-04" }
+
+### ---------- Alertas e insights ----------
+GET {{base}}/analise/1
