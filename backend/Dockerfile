@@ -9,6 +9,8 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/spendwise-backend-1.0.0.jar app.jar
 # Planos gratuitos têm cerca de 512 MB: limita o uso de memória do Java
+# Hospedagem usa o banco do Supabase (perfil supabase); localmente o padrao continua o Oracle
+ENV SPRING_PROFILES_ACTIVE=supabase
 ENV JAVA_TOOL_OPTIONS="-Xmx320m -XX:+UseSerialGC"
 EXPOSE 8080
 CMD ["java", "-jar", "app.jar"]

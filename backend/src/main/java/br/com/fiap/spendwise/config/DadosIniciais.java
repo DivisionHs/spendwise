@@ -26,6 +26,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -73,6 +74,10 @@ public class DadosIniciais implements CommandLineRunner {
     private final DividaRepository dividaRepository;
     private final MetaRepository metaRepository;
 
+    // Em hospedagem (perfil supabase) fica false: nao cria o usuario de teste publico do README
+    @Value("${spendwise.seed.usuario-teste:true}")
+    private boolean semearUsuarioTeste;
+
     public DadosIniciais(UsuarioRepository usuarioRepository,
                          ReceitaRepository receitaRepository,
                          DespesaRepository despesaRepository,
@@ -110,6 +115,10 @@ public class DadosIniciais implements CommandLineRunner {
             categoriaRepository.save(new CategoriaInvestimento("Fundos Imobiliários", "MODERADO"));
             categoriaRepository.save(new CategoriaInvestimento("Ações", "ALTO"));
             log.info("Categorias de investimento padrao criadas.");
+        }
+
+        if (!semearUsuarioTeste) {
+            return;
         }
 
         if (usuarioRepository.existsByEmailIgnoreCase(EMAIL_TESTE)) {
