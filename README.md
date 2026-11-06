@@ -4,7 +4,7 @@ Aplicação web de **controle financeiro pessoal**: o usuário registra receitas
 
 Projeto final de integração da FIAP (Fase 7), que reúne o que foi construído ao longo do ano: user stories e casos de uso (Fase 1), protótipo (Fase 2), modelagem de dados (Fase 3), telas (Fase 4), Java orientado a objetos (Fase 5), Oracle e acesso a dados (Fase 6) e, agora, Spring Boot com React (Fase 7).
 
-**Autor:** Davi Henrick Souza de Jesus (RM 570197), turma 1TDS.
+**Autor:** Davi Henrick Souza de Jesus, turma 1TDS (FIAP).
 
 ## Sumário
 
@@ -116,6 +116,12 @@ Cada cadastro corresponde a um controller do backend e permite **consultar, inse
 **Página de erro personalizada.** Qualquer endereço que não existe cai numa página 404 do próprio sistema, com caminho de volta.
 
 ![Página de erro 404](docs/screenshots/19-pagina-de-erro.png)
+
+**Modo escuro.** O botão **Escuro/Claro**, no rodapé do menu (e no canto da tela de login), alterna o tema do site. A escolha fica guardada no navegador e, sem escolha, vale a preferência do sistema. As cores do site são variáveis do CSS, então o modo escuro só redefine essas variáveis; a impressão sai sempre no tema claro.
+
+![Dashboard no modo escuro](docs/screenshots/22-modo-escuro-dashboard.png)
+
+![Extrato no modo escuro](docs/screenshots/23-modo-escuro-extrato.png)
 
 **Versão para celular.** No celular o menu lateral vira uma barra no topo com botão hambúrguer e uma gaveta que fecha ao navegar, ao tocar fora, no X ou com Esc. No computador, o menu pode ser recolhido para mostrar só os ícones.
 
@@ -230,7 +236,7 @@ export DB_PASSWORD="sua_senha_oracle"
 ./mvnw spring-boot:run
 ```
 
-Para usar outro usuário, defina também `DB_USER` (o padrão é `RM570197`). Atenção: três tentativas de login erradas bloqueiam o usuário da FIAP. Na primeira execução o backend cria o usuário de teste com dados de exemplo.
+Defina também `DB_USER` com o seu usuário RM da FIAP (por exemplo, `RM123456`). Atenção: três tentativas de login erradas bloqueiam o usuário da FIAP. Na primeira execução o backend cria o usuário de teste com dados de exemplo.
 
 **3. Frontend.** Em outro terminal, na pasta `frontend`:
 

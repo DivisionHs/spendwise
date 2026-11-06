@@ -1,5 +1,6 @@
 package br.com.fiap.spendwise.model;
 
+import br.com.fiap.spendwise.seguranca.ComDono;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "T_FIN_INVESTIMENTO")
-public class Investimento {
+public class Investimento implements ComDono {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

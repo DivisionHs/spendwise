@@ -1,5 +1,6 @@
 package br.com.fiap.spendwise.model;
 
+import br.com.fiap.spendwise.seguranca.ComDono;
 import br.com.fiap.spendwise.model.enums.TipoConta;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "T_FIN_CONTA")
-public class Conta {
+public class Conta implements ComDono {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

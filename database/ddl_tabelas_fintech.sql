@@ -32,6 +32,7 @@ CREATE TABLE T_FIN_USUARIO (
     ds_email   VARCHAR2(100) NOT NULL,
     ds_senha   VARCHAR2(255) NOT NULL,
     ds_cep     VARCHAR2(8) NOT NULL,
+    ds_papel   VARCHAR2(10) DEFAULT 'USUARIO' NOT NULL,
     CONSTRAINT pk_fin_usuario PRIMARY KEY (id_usuario),
     CONSTRAINT uk_fin_usuario_email UNIQUE (ds_email)
 );

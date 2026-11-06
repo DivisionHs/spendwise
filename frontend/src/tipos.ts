@@ -19,6 +19,7 @@ export interface Usuario {
   nome: string
   email: string
   cep: string
+  papel?: 'USUARIO' | 'MASTER' // definido só pelo servidor; quem se cadastra é sempre USUARIO
   senha?: string // só vai na ida (cadastro e edição); o backend nunca devolve
 }
 
@@ -152,3 +153,6 @@ export interface Lancamento {
   valorAssinado: number
   status: 'CONCLUIDO' | 'PENDENTE'
 }
+
+/** Resposta do login: dados do usuário (sem senha) e o token de acesso. */
+export type LoginResposta = Usuario & { token: string }

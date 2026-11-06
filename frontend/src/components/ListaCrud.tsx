@@ -13,6 +13,7 @@ import Alerta from './Alerta.tsx'
 //   rotaEditar     (item) => caminho da página de edição
 //   aoExcluir      async (item) => exclui no backend (lança erro se falhar)
 //   descricaoItem  (item) => texto usado no pop-up de exclusão
+//   podeEditar     (item) => false esconde o botão Editar (opcional)
 //   podeExcluir    (item) => false desabilita o botão (opcional)
 //   acoesExtras    (item) => botões extras na linha (ex.: "Pagar") (opcional)
 //   motivoBloqueio (item) => texto mostrado ao passar o mouse no botão desabilitado (opcional)
@@ -31,6 +32,7 @@ interface Props<T> {
   rotaEditar: (item: T) => string
   aoExcluir: (item: T) => Promise<void>
   descricaoItem: (item: T) => string
+  podeEditar?: (item: T) => boolean
   podeExcluir?: (item: T) => boolean
   motivoBloqueio?: (item: T) => string
   acoesExtras?: (item: T) => ReactNode
@@ -45,6 +47,7 @@ export default function ListaCrud<T>({
   rotaEditar,
   aoExcluir,
   descricaoItem,
+  podeEditar = () => true,
   podeExcluir = () => true,
   motivoBloqueio,
   acoesExtras,
@@ -99,9 +102,11 @@ export default function ListaCrud<T>({
                 ))}
                 <td className="coluna-acoes">
                   {acoesExtras?.(item)}
-                  <Link className="botao botao-pequeno botao-contorno" to={id}>
-                    Editar
-                  </Link>
+                  {podeEditar(item) && (
+                    <Link className="botao botao-pequeno botao-contorno" to={id}>
+                      Editar
+                    </Link>
+                  )}
                   <button
                     type="button"
                     className="botao botao-pequeno botao-perigo"

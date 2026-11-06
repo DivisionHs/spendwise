@@ -24,11 +24,21 @@ const inicial = (nome: string) => nome.trim().charAt(0).toUpperCase()
 export default function UsuariosLista() {
   const { usuario } = useAuth()
   const [busca, setBusca] = useState('')
-  const { itens, carregando, erro, recarregar } = useLista(() => usuariosApi.listar(), [])
-  // Para contar lançamentos por usuário (uma consulta por tipo, sem filtro)
-  const receitas = useLista(() => receitasApi.listarTodas(), [])
-  const despesas = useLista(() => despesasApi.listarTodas(), [])
-  const investimentos = useLista(() => investimentosApi.listarTodos(), [])
+  // Papel MASTER (administrador) ve todos os usuarios; os demais veem so o proprio perfil.
+  // A API tambem recusa (403) o que o papel nao permite, entao cada um carrega so o que pode.
+  const ehMaster = usuario.papel === 'MASTER'
+  const { itens: todosUsuarios, carregando, erro, recarregar } = useLista(
+    () => (ehMaster ? usuariosApi.listar() : usuariosApi.buscar(usuario.idUsuario).then((u) => [u])),
+    [ehMaster, usuario.idUsuario],
+  )
+  const itens = useMemo(
+    () => (ehMaster ? todosUsuarios : todosUsuarios.filter((u) => u.idUsuario === usuario.idUsuario)),
+    [ehMaster, todosUsuarios, usuario.idUsuario],
+  )
+  // Para contar lançamentos: o master conta os de todos; os demais, só os próprios
+  const receitas = useLista(() => (ehMaster ? receitasApi.listarTodas() : receitasApi.listar(usuario.idUsuario)), [ehMaster, usuario.idUsuario])
+  const despesas = useLista(() => (ehMaster ? despesasApi.listarTodas() : despesasApi.listar(usuario.idUsuario)), [ehMaster, usuario.idUsuario])
+  const investimentos = useLista(() => (ehMaster ? investimentosApi.listarTodos() : investimentosApi.listar(usuario.idUsuario)), [ehMaster, usuario.idUsuario])
 
   const contagem = useMemo(() => {
     const mapa: Record<number, { receitas: number; despesas: number; investimentos: number; total: number }> = {}
@@ -93,16 +103,21 @@ export default function UsuariosLista() {
 
   return (
     <>
-      <CabecalhoPagina titulo="Usuários" subtitulo="Pessoas cadastradas no SpendWise.">
-        <Link to="/usuarios/novo" className="botao botao-primario">
-          Novo usuário
-        </Link>
+      <CabecalhoPagina
+        titulo={ehMaster ? 'Usuários' : 'Meu perfil'}
+        subtitulo={ehMaster ? 'Pessoas cadastradas no SpendWise.' : 'Seus dados e o resumo dos seus lançamentos.'}
+      >
+        {ehMaster && (
+          <Link to="/usuarios/novo" className="botao botao-primario">
+            Novo usuário
+          </Link>
+        )}
       </CabecalhoPagina>
 
       <section className="perfil">
         <span className="avatar avatar-grande">{inicial(meu.nome)}</span>
         <div className="perfil-dados">
-          <span className="perfil-rotulo">Seu perfil</span>
+          <span className="perfil-rotulo">Seu perfil{meu.papel === 'MASTER' && <span className="etiqueta-master">Master</span>}</span>
           <strong>{meu.nome}</strong>
           <span>{meu.email}</span>
           <span>CEP {cep(meu.cep)}</span>
@@ -126,7 +141,7 @@ export default function UsuariosLista() {
         </Link>
       </section>
 
-      {!carregando && !erro && analise && (
+      {ehMaster && !carregando && !erro && analise && (
         <Analise guia={GUIA}>
           O SpendWise tem <strong>{itens.length}</strong> {itens.length === 1 ? 'usuário cadastrado' : 'usuários cadastrados'}.{' '}
           {analise.comLancamentos > 0 ? (
@@ -141,22 +156,25 @@ export default function UsuariosLista() {
         </Analise>
       )}
 
-      {!carregando && !erro && itens.length > 0 && (
+      {ehMaster && !carregando && !erro && itens.length > 0 && (
         <BarraBusca valor={busca} aoMudar={setBusca} total={itens.length} exibidos={filtrados.length} placeholder="Buscar por nome ou e-mail" />
       )}
 
-      <ListaCrud
-        colunas={colunas}
-        itens={filtrados}
-        carregando={carregando}
-        erro={erro}
-        rotaEditar={(u) => `/usuarios/${u.idUsuario}/editar`}
-        aoExcluir={excluir}
-        descricaoItem={(u) => `o usuário ${u.nome}`}
-        podeExcluir={(u) => u.idUsuario !== usuario.idUsuario && totalDe(u) === 0}
-        motivoBloqueio={motivoBloqueio}
-        vazio="Nenhum usuário encontrado para essa busca."
-      />
+      {/* A tabela de usuarios e do MASTER; quem tem papel comum ve so o cartao do proprio perfil */}
+      {ehMaster && (
+        <ListaCrud
+          colunas={colunas}
+          itens={filtrados}
+          carregando={carregando}
+          erro={erro}
+          rotaEditar={(u) => `/usuarios/${u.idUsuario}/editar`}
+          aoExcluir={excluir}
+          descricaoItem={(u) => `o usuário ${u.nome}`}
+          podeExcluir={(u) => u.idUsuario !== usuario.idUsuario && totalDe(u) === 0}
+          motivoBloqueio={motivoBloqueio}
+          vazio="Nenhum usuário encontrado para essa busca."
+        />
+      )}
 
       {/* Janela de cadastro/edicao (rotas filhas /novo e /:id/editar) abre por cima da lista */}
       <Outlet context={{ recarregar }} />

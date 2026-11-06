@@ -71,3 +71,6 @@ CREATE TABLE T_FIN_LOG_CHAT (
     CONSTRAINT pk_fin_log_chat PRIMARY KEY (id_interacao),
     CONSTRAINT fk_fin_log_chat_usuario FOREIGN KEY (id_usuario) REFERENCES T_FIN_USUARIO(id_usuario)
 );
+
+-- Papel do usuario (USUARIO ou MASTER), exigido pela branch deploy.
+ALTER TABLE T_FIN_USUARIO ADD ds_papel VARCHAR2(10) DEFAULT 'USUARIO' NOT NULL;

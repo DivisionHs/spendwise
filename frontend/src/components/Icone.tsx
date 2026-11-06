@@ -55,6 +55,13 @@ const CAMINHOS = {
   ),
   contas: <path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M12 3l9 5H3z" />,
   fechar: <path d="M6 6l12 12M18 6L6 18" />,
+  lua: <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />,
+  sol: (
+    <>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </>
+  ),
   mais: <path d="M12 5v14M5 12h14" />,
   importar: <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16" />,
   exportar: <path d="M12 15V3m0 0L8 7m4-4l4 4M4 19h16" />,

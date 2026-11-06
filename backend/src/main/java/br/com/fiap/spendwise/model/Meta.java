@@ -1,5 +1,6 @@
 package br.com.fiap.spendwise.model;
 
+import br.com.fiap.spendwise.seguranca.ComDono;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "T_FIN_METAS")
-public class Meta {
+public class Meta implements ComDono {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
