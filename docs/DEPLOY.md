@@ -18,3 +18,7 @@ A senha do banco não fica em nenhum arquivo do repositório: só nas variáveis
 | JWT_SECRET | Segredo do login por token (mínimo de 32 caracteres aleatórios) |
 
 Depois de salvar variáveis no Render, faça um **deploy** (Manual Deploy, Deploy latest commit): o Restart service não pega as variáveis salvas depois do último deploy.
+
+## Monitor de disponibilidade (UptimeRobot)
+
+Um monitor HTTP consulta `GET /api/saude` a cada 5 minutos. Isso mantém o Render acordado (o plano gratuito dorme após 15 minutos sem acesso) e o Supabase ativo (projetos sem uso são pausados), e avisa por e-mail se a API cair. Use sempre uma rota **pública**: se o monitor apontar para uma rota que exige token, ele recebe 401 e acusa a API como fora do ar.

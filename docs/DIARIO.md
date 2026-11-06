@@ -103,7 +103,7 @@ Registro cronológico do que foi feito, decidido e corrigido, com os problemas e
 
 **Decisão.** Implementação própria do token (JDK) em vez de Spring Security e uma biblioteca de JWT: menos dependências, menos configuração a conflitar com o CORS e comportamento todo coberto por teste. Spring Security continua sendo uma opção futura.
 
-**Pendência que a mudança cria.** Definir `JWT_SECRET` (mínimo de 32 caracteres aleatórios) nas variáveis do Render. Sem ele, o segredo é temporário e todos são desconectados a cada reinício do serviço.
+**Pendência que a mudança cria, resolvida às 23:43.** Definir `JWT_SECRET` (mínimo de 32 caracteres aleatórios, gerado pelo autor com o gerador do sistema) nas variáveis do Render e fazer um deploy. Antes disso, o segredo era temporário e todos eram desconectados a cada reinício; o log do deploy novo não traz mais o aviso.
 
 ### Noite: modo escuro
 
@@ -118,6 +118,21 @@ Registro cronológico do que foi feito, decidido e corrigido, com os problemas e
 2. O campo de busca ficou mais claro que os outros campos no escuro (usava o fundo padrão do navegador). Solução: regra de baixa especificidade que aplica a cor do tema aos campos sem estilo próprio.
 3. O rótulo "Modo escuro" quebrava em duas linhas no botão estreito: virou "Escuro" e "Claro".
 4. Um erro no próprio script de captura: uma variável chamada `URL` escondia a classe `URL` do Node.
+### Noite: monitor de disponibilidade fora do ar
+
+**Sintoma.** O UptimeRobot passou a acusar o servidor do SpendWise como fora do ar, embora o site abrisse e o login respondesse.
+
+**Causa.** O monitor consultava `GET /api/categorias-investimento`, uma rota que antes era aberta e passou a exigir token com o login por token. Sem token, a API responde 401, e o monitor entende qualquer resposta de erro como queda. O servidor estava vivo: o problema foi consequência da mudança de segurança.
+
+**Correção.** Nova rota pública `GET /api/saude`, que não devolve dado nenhum: só responde 200 se a API e o banco atendem uma consulta simples (`select 1`), ou 503 se o banco falhar. Como a consulta passa pelo banco, o monitor continua mantendo o Supabase ativo. O monitor foi apontado para essa rota. Dois testes novos (60 no total).
+
+**Lição.** Monitor de disponibilidade deve usar uma rota pública e estável, e não uma rota de negócio. Ao fechar a API com token, listar tudo o que a consultava sem token (monitor, scripts de teste).
+
+### Noite: validação e limpeza de dados pessoais
+
+- O autor testou o login e confirmou que tudo o que foi implementado funciona (token, master, papéis, modo escuro).
+- Varredura do repositório atrás de dados pessoais ou sensíveis. Nenhuma senha em arquivos nem no histórico. Encontrado e removido dos arquivos atuais: o número de matrícula (RM) no README e como usuário padrão do Oracle em `application.properties` (agora `SEU_RM`). O RM continua nos commits antigos; apagar do histórico exigiria reescrever commits e forçar o envio, o que não foi feito por ora. Para os próximos commits, o e-mail do autor passou a ser o endereço `noreply` do GitHub.
+- Criado `docs/CHECKLIST-PUBLICACAO.md` com o que precisa estar pronto antes de divulgar a ferramenta (segurança, teste de ponta a ponta e divulgação).
 ---
 
 ## Planos futuros
@@ -125,6 +140,7 @@ Registro cronológico do que foi feito, decidido e corrigido, com os problemas e
 | Item | Descrição |
 |---|---|
 | **Chatbot** | Assistente de conversa dentro do app para tirar dúvidas e consultar os próprios números (por exemplo, "quanto gastei com lazer este mês?"). A tabela `T_FIN_LOG_CHAT` já existe no modelo de dados desde as Fases 2 e 3, pensada para guardar a telemetria das conversas (início, fim, latência, resolução, sentimento e nota de satisfação), e hoje não tem entidade nem tela. Pontos a decidir: de onde vem a inteligência do chatbot, como ele acessa só os dados de quem está logado (o token já dá essa identidade) e como proteger a privacidade |
+| Divulgação da ferramenta | Publicação sobre o SpendWise na semana de 09/11, **só depois** de cumprir o [CHECKLIST-PUBLICACAO.md](CHECKLIST-PUBLICACAO.md) (funcional e sem falhas de segurança conhecidas) |
 | Limite de tentativas no login | Impedir que um robô teste senhas sem parar |
 | Cookie `httpOnly` no lugar do `localStorage` | Passo seguinte de segurança para o token |
 | Renovação de token | Hoje o token vale 7 dias e depois é preciso entrar de novo |

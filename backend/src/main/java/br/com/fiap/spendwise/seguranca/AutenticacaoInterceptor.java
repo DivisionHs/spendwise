@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
- * Exige o cabecalho "Authorization: Bearer TOKEN" em toda a API, menos no login e no cadastro.
+ * Exige o cabecalho "Authorization: Bearer TOKEN" em toda a API, menos no login, no cadastro e na verificacao de saude.
  * Com o token valido, confere o usuario no banco (assim exclusao e mudanca de papel valem na hora)
  * e aplica as regras de Autorizacao. Os erros viram JSON pelo TratadorDeErros (401 e 403).
  */
@@ -57,6 +57,9 @@ public class AutenticacaoInterceptor implements HandlerInterceptor {
 
     private boolean publica(String metodo, String caminho) {
         String limpo = caminho.endsWith("/") ? caminho.substring(0, caminho.length() - 1) : caminho;
+        if ("GET".equalsIgnoreCase(metodo) && "/api/saude".equals(limpo)) {
+            return true; // verificacao de saude para o monitor de disponibilidade: nao devolve dado nenhum
+        }
         return "POST".equalsIgnoreCase(metodo)
                 && ("/api/auth/login".equals(limpo) || "/api/usuarios".equals(limpo));
     }

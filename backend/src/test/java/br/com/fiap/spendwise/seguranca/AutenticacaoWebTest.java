@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import br.com.fiap.spendwise.controller.AuthController;
 import br.com.fiap.spendwise.controller.ReceitaController;
+import br.com.fiap.spendwise.controller.SaudeController;
 import br.com.fiap.spendwise.model.Receita;
 import br.com.fiap.spendwise.model.Usuario;
 import br.com.fiap.spendwise.model.enums.Papel;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,7 +34,7 @@ import org.springframework.test.web.servlet.MockMvc;
  * Teste da camada web (sem banco): interceptador de login, regras de acesso e conferencia do dono no corpo,
  * incluindo o formato JSON dos erros 401 e 403.
  */
-@WebMvcTest({ReceitaController.class, AuthController.class})
+@WebMvcTest({ReceitaController.class, AuthController.class, SaudeController.class})
 @Import({TokenService.class, Autorizacao.class, AutenticacaoInterceptor.class})
 @TestPropertySource(properties = {
         "spendwise.auth.segredo=um-segredo-de-teste-com-mais-de-32-caracteres!",
@@ -52,6 +54,8 @@ class AutenticacaoWebTest {
     private UsuarioRepository usuarioRepository;
     @MockBean
     private DonoDoRegistro donos;
+    @MockBean
+    private JdbcTemplate jdbc;
 
     private final Usuario ana = usuario(1L, Papel.USUARIO);
     private final Usuario mestre = usuario(99L, Papel.MASTER);
@@ -166,5 +170,21 @@ class AutenticacaoWebTest {
                         .header("Access-Control-Request-Method", "GET")
                         .header("Access-Control-Request-Headers", "authorization"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void verificacaoDeSaudeEPublicaESemDados() throws Exception {
+        when(jdbc.queryForObject("select 1", Integer.class)).thenReturn(1);
+        mvc.perform(get("/api/saude"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value("ok"));
+    }
+
+    @Test
+    void saudeResponde503SeOBancoFalhar() throws Exception {
+        when(jdbc.queryForObject("select 1", Integer.class)).thenThrow(new org.springframework.dao.DataAccessResourceFailureException("sem banco"));
+        mvc.perform(get("/api/saude"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(jsonPath("$.status").value("indisponivel"));
     }
 }

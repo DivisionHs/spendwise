@@ -13,6 +13,7 @@ A API exige um **token de acesso** em todas as chamadas, menos no login e no cad
 |---|---|
 | `POST /api/auth/login` | Pública |
 | `POST /api/usuarios` (cadastro) | Pública |
+| `GET /api/saude` (verificação de saúde) | Pública. Não devolve dado nenhum: só confirma que a API responde e que o banco atende uma consulta simples (200 `{\"status\":\"ok\"}` ou 503). Serve para o monitor de disponibilidade |
 | `OPTIONS` (pré-verificação do navegador, CORS) | Pública |
 | Qualquer outra rota de `/api/**` | Exige token válido |
 
