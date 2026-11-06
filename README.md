@@ -4,7 +4,7 @@ Aplicação web de **controle financeiro pessoal**: o usuário registra receitas
 
 Projeto final de integração da FIAP (Fase 7), que reúne o que foi construído ao longo do ano: user stories e casos de uso (Fase 1), protótipo (Fase 2), modelagem de dados (Fase 3), telas (Fase 4), Java orientado a objetos (Fase 5), Oracle e acesso a dados (Fase 6) e, agora, Spring Boot com React (Fase 7).
 
-**Autor:** Davi Henrick Souza de Jesus (RM 570197), turma 1TDS.
+**Autor:** Davi Henrick Souza de Jesus, turma 1TDS (FIAP).
 
 ## Sumário
 
@@ -230,7 +230,7 @@ export DB_PASSWORD="sua_senha_oracle"
 ./mvnw spring-boot:run
 ```
 
-Para usar outro usuário, defina também `DB_USER` (o padrão é `RM570197`). Atenção: três tentativas de login erradas bloqueiam o usuário da FIAP. Na primeira execução o backend cria o usuário de teste com dados de exemplo.
+Defina também `DB_USER` com o seu usuário RM da FIAP (por exemplo, `RM123456`). Atenção: três tentativas de login erradas bloqueiam o usuário da FIAP. Na primeira execução o backend cria o usuário de teste com dados de exemplo.
 
 **3. Frontend.** Em outro terminal, na pasta `frontend`:
 
