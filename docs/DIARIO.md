@@ -1,6 +1,6 @@
 # Diário do projeto SpendWise
 
-Registro cronológico do que foi feito, decidido e corrigido, com os problemas encontrados e o que cada um ensinou. Atualizado a cada etapa. Horários no fuso de Brasília.
+Alterações por versão: [`CHANGELOG.md`](CHANGELOG.md). Problemas em produção: [`INCIDENTES.md`](INCIDENTES.md). Registro cronológico do que foi feito, decidido e corrigido, com os problemas encontrados e o que cada um ensinou. Atualizado a cada etapa. Horários no fuso de Brasília.
 
 ## Como ler
 
@@ -141,6 +141,8 @@ Registro cronológico do que foi feito, decidido e corrigido, com os problemas e
 |---|---|
 | **Chatbot** | Assistente de conversa dentro do app para tirar dúvidas e consultar os próprios números (por exemplo, "quanto gastei com lazer este mês?"). A tabela `T_FIN_LOG_CHAT` já existe no modelo de dados desde as Fases 2 e 3, pensada para guardar a telemetria das conversas (início, fim, latência, resolução, sentimento e nota de satisfação), e hoje não tem entidade nem tela. Pontos a decidir: de onde vem a inteligência do chatbot, como ele acessa só os dados de quem está logado (o token já dá essa identidade) e como proteger a privacidade |
 | Divulgação da ferramenta | Publicação sobre o SpendWise na semana de 09/11, **só depois** de cumprir o [CHECKLIST-PUBLICACAO.md](CHECKLIST-PUBLICACAO.md) (funcional e sem falhas de segurança conhecidas) |
+| Abrir para outras pessoas (uso gratuito) | Convidar um grupo pequeno para testar e dar retorno, depois de cumprir o checklist e de ter política de privacidade e termos de uso |
+| Política de privacidade e termos de uso | Necessários antes de receber dados financeiros de outras pessoas (LGPD): quais dados, para quê, por quanto tempo, como excluir e exportar |
 | Limite de tentativas no login | Impedir que um robô teste senhas sem parar |
 | Cookie `httpOnly` no lugar do `localStorage` | Passo seguinte de segurança para o token |
 | Renovação de token | Hoje o token vale 7 dias e depois é preciso entrar de novo |
