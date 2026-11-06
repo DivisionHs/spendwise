@@ -2048,3 +2048,18 @@ h2 {
     background: #fff;
   }
 }
+
+/* Selo do papel MASTER (administrador) ao lado do nome */
+.etiqueta-master {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  background: #6ee7b7;
+  color: #064e3b;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  vertical-align: middle;
+}

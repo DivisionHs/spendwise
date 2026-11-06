@@ -2,7 +2,10 @@ package br.com.fiap.spendwise.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
+import br.com.fiap.spendwise.model.enums.Papel;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,6 +36,12 @@ public class Usuario {
 
     @Column(name = "ds_cep", nullable = false, length = 8)
     private String cep;
+
+    // READ_ONLY: aparece nas respostas, mas e ignorado na entrada (ninguem se promove pela API)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "ds_papel", nullable = false, length = 10)
+    private Papel papel = Papel.USUARIO;
 
     public Usuario() {
     }
@@ -82,5 +91,13 @@ public class Usuario {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public Papel getPapel() {
+        return papel;
+    }
+
+    public void setPapel(Papel papel) {
+        this.papel = papel == null ? Papel.USUARIO : papel;
     }
 }

@@ -162,7 +162,10 @@ export default function Layout() {
               {usuario?.nome?.trim().charAt(0).toUpperCase()}
             </span>
             <div className="menu-texto">
-              <div className="menu-usuario-nome">{usuario?.nome}</div>
+              <div className="menu-usuario-nome">
+                {usuario?.nome}
+                {usuario?.papel === 'MASTER' && <span className="etiqueta-master">Master</span>}
+              </div>
               <div className="menu-usuario-email">{usuario?.email}</div>
             </div>
           </div>

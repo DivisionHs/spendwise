@@ -24,7 +24,13 @@ const inicial = (nome: string) => nome.trim().charAt(0).toUpperCase()
 export default function UsuariosLista() {
   const { usuario } = useAuth()
   const [busca, setBusca] = useState('')
-  const { itens, carregando, erro, recarregar } = useLista(() => usuariosApi.listar(), [])
+  const { itens: todosUsuarios, carregando, erro, recarregar } = useLista(() => usuariosApi.listar(), [])
+  // Papel MASTER (administrador) ve todos os usuarios; os demais veem so o proprio perfil.
+  const ehMaster = usuario.papel === 'MASTER'
+  const itens = useMemo(
+    () => (ehMaster ? todosUsuarios : todosUsuarios.filter((u) => u.idUsuario === usuario.idUsuario)),
+    [ehMaster, todosUsuarios, usuario.idUsuario],
+  )
   // Para contar lançamentos por usuário (uma consulta por tipo, sem filtro)
   const receitas = useLista(() => receitasApi.listarTodas(), [])
   const despesas = useLista(() => despesasApi.listarTodas(), [])
@@ -93,16 +99,18 @@ export default function UsuariosLista() {
 
   return (
     <>
-      <CabecalhoPagina titulo="Usuários" subtitulo="Pessoas cadastradas no SpendWise.">
-        <Link to="/usuarios/novo" className="botao botao-primario">
-          Novo usuário
-        </Link>
+      <CabecalhoPagina titulo="Usuários" subtitulo={ehMaster ? 'Pessoas cadastradas no SpendWise.' : 'Os seus dados no SpendWise.'}>
+        {ehMaster && (
+          <Link to="/usuarios/novo" className="botao botao-primario">
+            Novo usuário
+          </Link>
+        )}
       </CabecalhoPagina>
 
       <section className="perfil">
         <span className="avatar avatar-grande">{inicial(meu.nome)}</span>
         <div className="perfil-dados">
-          <span className="perfil-rotulo">Seu perfil</span>
+          <span className="perfil-rotulo">Seu perfil{meu.papel === 'MASTER' && <span className="etiqueta-master">Master</span>}</span>
           <strong>{meu.nome}</strong>
           <span>{meu.email}</span>
           <span>CEP {cep(meu.cep)}</span>
@@ -126,7 +134,7 @@ export default function UsuariosLista() {
         </Link>
       </section>
 
-      {!carregando && !erro && analise && (
+      {ehMaster && !carregando && !erro && analise && (
         <Analise guia={GUIA}>
           O SpendWise tem <strong>{itens.length}</strong> {itens.length === 1 ? 'usuário cadastrado' : 'usuários cadastrados'}.{' '}
           {analise.comLancamentos > 0 ? (
@@ -141,7 +149,7 @@ export default function UsuariosLista() {
         </Analise>
       )}
 
-      {!carregando && !erro && itens.length > 0 && (
+      {ehMaster && !carregando && !erro && itens.length > 0 && (
         <BarraBusca valor={busca} aoMudar={setBusca} total={itens.length} exibidos={filtrados.length} placeholder="Buscar por nome ou e-mail" />
       )}
 
