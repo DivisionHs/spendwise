@@ -99,7 +99,10 @@ export default function UsuariosLista() {
 
   return (
     <>
-      <CabecalhoPagina titulo="Usuários" subtitulo={ehMaster ? 'Pessoas cadastradas no SpendWise.' : 'Os seus dados no SpendWise.'}>
+      <CabecalhoPagina
+        titulo={ehMaster ? 'Usuários' : 'Meu perfil'}
+        subtitulo={ehMaster ? 'Pessoas cadastradas no SpendWise.' : 'Seus dados e o resumo dos seus lançamentos.'}
+      >
         {ehMaster && (
           <Link to="/usuarios/novo" className="botao botao-primario">
             Novo usuário
@@ -153,18 +156,21 @@ export default function UsuariosLista() {
         <BarraBusca valor={busca} aoMudar={setBusca} total={itens.length} exibidos={filtrados.length} placeholder="Buscar por nome ou e-mail" />
       )}
 
-      <ListaCrud
-        colunas={colunas}
-        itens={filtrados}
-        carregando={carregando}
-        erro={erro}
-        rotaEditar={(u) => `/usuarios/${u.idUsuario}/editar`}
-        aoExcluir={excluir}
-        descricaoItem={(u) => `o usuário ${u.nome}`}
-        podeExcluir={(u) => u.idUsuario !== usuario.idUsuario && totalDe(u) === 0}
-        motivoBloqueio={motivoBloqueio}
-        vazio="Nenhum usuário encontrado para essa busca."
-      />
+      {/* A tabela de usuarios e do MASTER; quem tem papel comum ve so o cartao do proprio perfil */}
+      {ehMaster && (
+        <ListaCrud
+          colunas={colunas}
+          itens={filtrados}
+          carregando={carregando}
+          erro={erro}
+          rotaEditar={(u) => `/usuarios/${u.idUsuario}/editar`}
+          aoExcluir={excluir}
+          descricaoItem={(u) => `o usuário ${u.nome}`}
+          podeExcluir={(u) => u.idUsuario !== usuario.idUsuario && totalDe(u) === 0}
+          motivoBloqueio={motivoBloqueio}
+          vazio="Nenhum usuário encontrado para essa busca."
+        />
+      )}
 
       {/* Janela de cadastro/edicao (rotas filhas /novo e /:id/editar) abre por cima da lista */}
       <Outlet context={{ recarregar }} />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.tsx'
 import Icone, { type NomeIcone } from './Icone.tsx'
 
@@ -88,6 +88,14 @@ export default function Layout() {
     navegar('/login')
   }
 
+  // Quem nao e MASTER nao tem lista de usuarios: o mesmo item abre o proprio perfil (Meu perfil)
+  const secoes = SECOES_MENU.map((secao) => ({
+    ...secao,
+    itens: secao.itens.map((item) =>
+      item.para === '/usuarios' && usuario?.papel !== 'MASTER' ? { ...item, rotulo: 'Meu perfil' } : item,
+    ),
+  }))
+
   const classesMenu = ['menu', recolhido ? 'recolhido' : '', gavetaAberta ? 'aberto' : ''].join(' ').trim()
 
   return (
@@ -134,7 +142,7 @@ export default function Layout() {
         </div>
 
         <nav className="menu-itens">
-          {SECOES_MENU.map((secao) => (
+          {secoes.map((secao) => (
             <div className="menu-secao" key={secao.titulo}>
               <span className="menu-secao-titulo menu-texto">{secao.titulo}</span>
               {secao.itens.map((item) => (
@@ -157,7 +165,7 @@ export default function Layout() {
         </nav>
 
         <div className="menu-usuario">
-          <div className="menu-usuario-dados">
+          <Link to="/usuarios" className="menu-usuario-dados" aria-label="Abrir meu perfil" title="Meu perfil">
             <span className="menu-avatar" data-rotulo={usuario?.nome}>
               {usuario?.nome?.trim().charAt(0).toUpperCase()}
             </span>
@@ -168,7 +176,7 @@ export default function Layout() {
               </div>
               <div className="menu-usuario-email">{usuario?.email}</div>
             </div>
-          </div>
+          </Link>
           <button
             type="button"
             className="botao botao-contorno botao-bloco menu-sair"

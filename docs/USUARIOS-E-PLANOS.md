@@ -4,8 +4,8 @@ O SpendWise tem dois **papéis** (níveis de acesso). Cada usuário tem exatamen
 
 | Papel | Quem é | O que vê e faz hoje |
 |---|---|---|
-| `USUARIO` | Todo mundo que se cadastra em **Cadastre-se**. É o padrão | Usa o sistema com os próprios dados. Na tela **Usuários** vê só o próprio perfil, sem lista de outras pessoas e sem o botão de novo usuário |
-| `MASTER` | Administrador do sistema (o dono do projeto) | Tudo o que o usuário comum faz, e mais: vê a lista de todos os usuários, a análise da base (quantos têm lançamentos, quem mais movimenta) e cadastra usuários pela tela. Aparece com o selo **Master** ao lado do nome |
+| `USUARIO` | Todo mundo que se cadastra em **Cadastre-se**. É o padrão | Usa o sistema com os próprios dados. No menu, o item **Meu perfil** (no lugar de Usuários), e também o bloco com foto e nome no rodapé do menu, abrem o próprio perfil, sem lista de outras pessoas e sem o botão de novo usuário |
+| `MASTER` | Administrador do sistema (o dono do projeto) | Tudo o que o usuário comum faz, e mais: vê a lista de todos os usuários, a análise da base (quantos têm lançamentos, quem mais movimenta) e cadastra usuários pela tela (item **Usuários** do menu). Aparece com o selo **Master** ao lado do nome |
 
 ## Como o master é criado
 
