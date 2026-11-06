@@ -1,5 +1,6 @@
 package br.com.fiap.spendwise.model;
 
+import br.com.fiap.spendwise.seguranca.ComDono;
 import jakarta.persistence.Column;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
  * (efeitoNoSaldo) e as colunas de cada tabela sao ajustadas com @AttributeOverride.
  */
 @MappedSuperclass
-public abstract class Transacao {
+public abstract class Transacao implements ComDono {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "id_usuario", nullable = false)

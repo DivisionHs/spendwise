@@ -32,9 +32,9 @@ A tabela `T_FIN_USUARIO` ganhou a coluna `ds_papel VARCHAR(10) DEFAULT 'USUARIO'
 - **Supabase (Postgres):** acrescentada sozinha na subida (`ALTER TABLE ... ADD COLUMN IF NOT EXISTS`, em `backend/src/main/resources/db/supabase/schema.sql`).
 - **Oracle:** `database/ddl_tabelas_fintech.sql` (banco novo) já inclui a coluna e `database/ddl_evolucao_fase7.sql` traz o `ALTER TABLE` para quem já tem a tabela. Só a branch `deploy` usa a coluna; a `main` e o zip da FIAP não mudaram.
 
-## Limites atuais (importante)
+## Como o papel é aplicado
 
-A API ainda **não tem autenticação por token**: o login só confere e-mail e senha e devolve o usuário. Por isso hoje o papel organiza a **tela** (o que cada pessoa vê), mas a API em si não bloqueia chamadas feitas por fora do site. A restrição real, no servidor, vem com o login por token (JWT): o servidor passará a identificar quem chama e a recusar (403) o que o papel não permite. Até lá, não trate o papel como proteção de dados.
+O papel é aplicado **no servidor**, pelo login por token: a API identifica quem chama e responde 403 ao que o papel não permite (por exemplo, um usuário comum que peça a lista de usuários ou os dados de outra pessoa). A tela também se ajusta ao papel. As regras completas estão em [AUTENTICACAO.md](AUTENTICACAO.md).
 
 ## Como trocar ou rebaixar o master
 

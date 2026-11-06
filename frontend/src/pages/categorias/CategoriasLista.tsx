@@ -21,6 +21,7 @@ const GUIA = [
 // Mostra também quanto o usuário logado já investiu em cada uma.
 export default function CategoriasLista() {
   const { usuario } = useAuth()
+  const ehMaster = usuario.papel === 'MASTER' // as categorias sao compartilhadas: só o master altera
   const { itens, carregando, erro, recarregar } = useLista(() => categoriasApi.listar(), [])
   const aportes = useLista(() => investimentosApi.listar(usuario.idUsuario), [usuario.idUsuario])
 
@@ -70,10 +71,12 @@ export default function CategoriasLista() {
         <Link to="/investimentos" className="botao botao-contorno">
           Voltar aos investimentos
         </Link>
+        {ehMaster && (
         <Link to="/categorias/novo" className="botao botao-primario">
           <Icone nome="mais" tamanho={18} />
           Nova categoria
         </Link>
+        )}
       </CabecalhoPagina>
 
       {!carregando && !erro && analise && (
@@ -101,6 +104,9 @@ export default function CategoriasLista() {
         erro={erro}
         rotaEditar={(c) => `/categorias/${c.idCatInvest}/editar`}
         aoExcluir={excluir}
+        podeEditar={() => ehMaster}
+        podeExcluir={() => ehMaster}
+        motivoBloqueio={() => 'Só o administrador exclui categorias de investimento.'}
         descricaoItem={(c) => `a categoria "${c.nome}"`}
       />
 

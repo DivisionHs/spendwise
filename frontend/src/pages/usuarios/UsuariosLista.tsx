@@ -24,17 +24,21 @@ const inicial = (nome: string) => nome.trim().charAt(0).toUpperCase()
 export default function UsuariosLista() {
   const { usuario } = useAuth()
   const [busca, setBusca] = useState('')
-  const { itens: todosUsuarios, carregando, erro, recarregar } = useLista(() => usuariosApi.listar(), [])
   // Papel MASTER (administrador) ve todos os usuarios; os demais veem so o proprio perfil.
+  // A API tambem recusa (403) o que o papel nao permite, entao cada um carrega so o que pode.
   const ehMaster = usuario.papel === 'MASTER'
+  const { itens: todosUsuarios, carregando, erro, recarregar } = useLista(
+    () => (ehMaster ? usuariosApi.listar() : usuariosApi.buscar(usuario.idUsuario).then((u) => [u])),
+    [ehMaster, usuario.idUsuario],
+  )
   const itens = useMemo(
     () => (ehMaster ? todosUsuarios : todosUsuarios.filter((u) => u.idUsuario === usuario.idUsuario)),
     [ehMaster, todosUsuarios, usuario.idUsuario],
   )
-  // Para contar lançamentos por usuário (uma consulta por tipo, sem filtro)
-  const receitas = useLista(() => receitasApi.listarTodas(), [])
-  const despesas = useLista(() => despesasApi.listarTodas(), [])
-  const investimentos = useLista(() => investimentosApi.listarTodos(), [])
+  // Para contar lançamentos: o master conta os de todos; os demais, só os próprios
+  const receitas = useLista(() => (ehMaster ? receitasApi.listarTodas() : receitasApi.listar(usuario.idUsuario)), [ehMaster, usuario.idUsuario])
+  const despesas = useLista(() => (ehMaster ? despesasApi.listarTodas() : despesasApi.listar(usuario.idUsuario)), [ehMaster, usuario.idUsuario])
+  const investimentos = useLista(() => (ehMaster ? investimentosApi.listarTodos() : investimentosApi.listar(usuario.idUsuario)), [ehMaster, usuario.idUsuario])
 
   const contagem = useMemo(() => {
     const mapa: Record<number, { receitas: number; despesas: number; investimentos: number; total: number }> = {}

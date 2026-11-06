@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Alerta from '../components/Alerta.tsx'
-import { useAuthPublico } from '../context/AuthContext.tsx'
+import { CHAVE_SESSAO_EXPIRADA, useAuthPublico } from '../context/AuthContext.tsx'
 
 // Página de autenticação: valida e-mail e senha no backend (POST /api/auth/login).
 export default function Login() {
@@ -10,7 +10,12 @@ export default function Login() {
   const local = useLocation()
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  const [erro, setErro] = useState('')
+  // Se a API recusou o token (sessão vencida), avisa uma vez ao chegar aqui
+  const [erro, setErro] = useState(() => {
+    if (!sessionStorage.getItem(CHAVE_SESSAO_EXPIRADA)) return ''
+    sessionStorage.removeItem(CHAVE_SESSAO_EXPIRADA)
+    return 'Sua sessão expirou. Entre novamente.'
+  })
   const [entrando, setEntrando] = useState(false)
 
   // Já logado: não precisa ver a tela de login

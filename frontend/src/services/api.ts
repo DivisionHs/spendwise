@@ -11,11 +11,26 @@ import type {
   Orcamento,
   OrcamentoStatus,
   Receita,
+  LoginResposta,
   ResumoFinanceiro,
   Usuario,
 } from '../tipos.ts'
 
 const BASE_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api'
+
+// Token de login (JWT). Guardado no navegador e enviado em "Authorization: Bearer" em toda chamada.
+const CHAVE_TOKEN = 'spendwise.token'
+export const sessaoToken = {
+  ler: () => localStorage.getItem(CHAVE_TOKEN),
+  gravar: (token: string) => localStorage.setItem(CHAVE_TOKEN, token),
+  limpar: () => localStorage.removeItem(CHAVE_TOKEN),
+}
+
+// Chamado quando a API responde 401 fora do login (token vencido ou inválido): o AuthContext encerra a sessão.
+let aoSessaoExpirar: (() => void) | null = null
+export function registrarAoSessaoExpirar(acao: (() => void) | null) {
+  aoSessaoExpirar = acao
+}
 
 export class ErroApi extends Error {
   status: number
@@ -31,12 +46,20 @@ interface Opcoes {
   corpo?: unknown
 }
 
+function cabecalhos(comCorpo: boolean): Record<string, string> {
+  const cab: Record<string, string> = {}
+  if (comCorpo) cab['Content-Type'] = 'application/json'
+  const token = sessaoToken.ler()
+  if (token) cab.Authorization = `Bearer ${token}`
+  return cab
+}
+
 async function requisitar<T>(caminho: string, { metodo = 'GET', corpo }: Opcoes = {}): Promise<T> {
   let resposta: Response
   try {
     resposta = await fetch(`${BASE_URL}${caminho}`, {
       method: metodo,
-      headers: corpo ? { 'Content-Type': 'application/json' } : undefined,
+      headers: cabecalhos(corpo !== undefined),
       body: corpo ? JSON.stringify(corpo) : undefined,
     })
   } catch {
@@ -44,6 +67,7 @@ async function requisitar<T>(caminho: string, { metodo = 'GET', corpo }: Opcoes 
   }
 
   if (!resposta.ok) {
+    if (resposta.status === 401 && caminho !== '/auth/login') aoSessaoExpirar?.()
     let mensagem = `Erro ${resposta.status} ao falar com o servidor.`
     try {
       const dados = await resposta.json()
@@ -68,7 +92,7 @@ export const api = {
 
 // Atalhos por entidade (um por controller do backend)
 export const authApi = {
-  login: (email: string, senha: string) => api.post<Usuario>('/auth/login', { email, senha }),
+  login: (email: string, senha: string) => api.post<LoginResposta>('/auth/login', { email, senha }),
 }
 
 export const usuariosApi = {

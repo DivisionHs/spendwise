@@ -153,3 +153,6 @@ export interface Lancamento {
   valorAssinado: number
   status: 'CONCLUIDO' | 'PENDENTE'
 }
+
+/** Resposta do login: dados do usuário (sem senha) e o token de acesso. */
+export type LoginResposta = Usuario & { token: string }
