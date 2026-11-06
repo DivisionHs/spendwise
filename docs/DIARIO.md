@@ -105,6 +105,19 @@ Registro cronológico do que foi feito, decidido e corrigido, com os problemas e
 
 **Pendência que a mudança cria.** Definir `JWT_SECRET` (mínimo de 32 caracteres aleatórios) nas variáveis do Render. Sem ele, o segredo é temporário e todos são desconectados a cada reinício do serviço.
 
+### Noite: modo escuro
+
+**Feito**
+- Botão **Escuro/Claro** no rodapé do menu e no canto da tela de login. A escolha fica guardada no navegador; sem escolha, vale a preferência do sistema. Um script no `index.html` aplica o tema antes de desenhar a página, para ela não piscar clara no modo escuro.
+- O CSS (cerca de 2.000 linhas) usava cores fixas em vários lugares. As superfícies, textos e bordas de fundo claro foram trocados por **variáveis semânticas** (`--fundo`, `--superficie`, `--texto`, `--borda` e outras); o modo escuro redefine só essas variáveis (atributo `data-tema="escuro"` no `<html>`). O que já era escuro (menu, cartão de análise, dicas) não mudou.
+- Cores pastel de alertas e etiquetas viram tons translúcidos no escuro; links ficam em verde claro; campos de formulário e controles nativos seguem o tema (`color-scheme`); a impressão sai sempre no tema claro.
+- Prints dos dois temas conferidos com o navegador automatizado e uma API simulada (sem erros de página). Dois prints do modo escuro entraram no README.
+
+**Problemas e soluções**
+1. Os botões de tema e de sair empurraram o item "Usuários" para fora da área visível do menu em telas baixas. Solução: os dois ficam lado a lado no rodapé (um sobre o outro só no menu recolhido).
+2. O campo de busca ficou mais claro que os outros campos no escuro (usava o fundo padrão do navegador). Solução: regra de baixa especificidade que aplica a cor do tema aos campos sem estilo próprio.
+3. O rótulo "Modo escuro" quebrava em duas linhas no botão estreito: virou "Escuro" e "Claro".
+4. Um erro no próprio script de captura: uma variável chamada `URL` escondia a classe `URL` do Node.
 ---
 
 ## Planos futuros
@@ -112,7 +125,6 @@ Registro cronológico do que foi feito, decidido e corrigido, com os problemas e
 | Item | Descrição |
 |---|---|
 | **Chatbot** | Assistente de conversa dentro do app para tirar dúvidas e consultar os próprios números (por exemplo, "quanto gastei com lazer este mês?"). A tabela `T_FIN_LOG_CHAT` já existe no modelo de dados desde as Fases 2 e 3, pensada para guardar a telemetria das conversas (início, fim, latência, resolução, sentimento e nota de satisfação), e hoje não tem entidade nem tela. Pontos a decidir: de onde vem a inteligência do chatbot, como ele acessa só os dados de quem está logado (o token já dá essa identidade) e como proteger a privacidade |
-| Modo escuro | Tema escuro no site, com botão para alternar e preferência guardada no navegador |
 | Limite de tentativas no login | Impedir que um robô teste senhas sem parar |
 | Cookie `httpOnly` no lugar do `localStorage` | Passo seguinte de segurança para o token |
 | Renovação de token | Hoje o token vale 7 dias e depois é preciso entrar de novo |

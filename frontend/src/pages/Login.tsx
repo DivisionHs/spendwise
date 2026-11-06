@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import Alerta from '../components/Alerta.tsx'
+import BotaoTema from '../components/BotaoTema.tsx'
 import { CHAVE_SESSAO_EXPIRADA, useAuthPublico } from '../context/AuthContext.tsx'
 
 // Página de autenticação: valida e-mail e senha no backend (POST /api/auth/login).
@@ -36,6 +37,7 @@ export default function Login() {
 
   return (
     <div className="pagina-centro">
+      <BotaoTema flutuante />
       <form className="cartao-login" onSubmit={enviar}>
         <div className="marca-grande">
           Spend<span>Wise</span>

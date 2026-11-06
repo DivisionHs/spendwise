@@ -15,6 +15,50 @@
   --ambar: #d97706;
   --raio: 10px;
   --sombra: 0 1px 3px rgba(15, 23, 42, 0.1), 0 1px 2px rgba(15, 23, 42, 0.06);
+
+  /* Cores semanticas: o modo escuro redefine so estas (e a escala slate-500) */
+  --fundo: var(--slate-50);
+  --superficie: #fff;
+  --superficie-2: var(--slate-100);
+  --texto: var(--slate-900);
+  --texto-2: var(--slate-700);
+  --borda: var(--slate-200);
+  --borda-forte: var(--slate-300);
+}
+
+/* ---------- Modo escuro ---------- */
+/* Ativado por data-tema="escuro" no <html> (botao no menu; preferencia guardada no navegador) */
+:root[data-tema='escuro'] {
+  color-scheme: dark;
+  --fundo: #0b1220;
+  --superficie: #131c2e;
+  --superficie-2: #1b2740;
+  --texto: #e5e9f0;
+  --texto-2: #cbd5e1;
+  --borda: #25324a;
+  --borda-forte: #3a4a66;
+  --slate-500: #94a3b8;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.55), 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Links em verde claro (baixa especificidade: os botoes, que sao links, mantem as proprias cores) */
+:where(:root[data-tema='escuro']) a {
+  color: #34d399;
+}
+
+/* Imprimir sempre em tema claro */
+@media print {
+  :root[data-tema='escuro'] {
+    color-scheme: light;
+    --fundo: #fff;
+    --superficie: #fff;
+    --superficie-2: #f1f5f9;
+    --texto: #0f172a;
+    --texto-2: #334155;
+    --borda: #e2e8f0;
+    --borda-forte: #cbd5e1;
+    --slate-500: #64748b;
+  }
 }
 
 * {
@@ -24,8 +68,8 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-  color: var(--slate-900);
-  background: var(--slate-50);
+  color: var(--texto);
+  background: var(--fundo);
   line-height: 1.5;
 }
 
@@ -345,7 +389,7 @@ a.menu-usuario-dados:hover {
 .cabecalho-separador {
   width: 1px;
   height: 1.6rem;
-  background: var(--slate-300);
+  background: var(--borda-forte);
   margin: 0 0.2rem;
 }
 
@@ -390,13 +434,13 @@ a.menu-usuario-dados:hover {
 }
 
 .botao-contorno {
-  background: #fff;
-  color: var(--slate-700);
-  border-color: var(--slate-300);
+  background: var(--superficie);
+  color: var(--texto-2);
+  border-color: var(--borda-forte);
 }
 
 .botao-contorno:hover:not(:disabled) {
-  background: var(--slate-100);
+  background: var(--superficie-2);
 }
 
 .menu .botao-contorno {
@@ -410,7 +454,7 @@ a.menu-usuario-dados:hover {
 }
 
 .botao-perigo {
-  background: #fff;
+  background: var(--superficie);
   color: var(--rosa);
   border-color: #fecdd3;
 }
@@ -431,7 +475,7 @@ a.menu-usuario-dados:hover {
 /* ---------- Tabela ---------- */
 
 .tabela-caixa {
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   overflow-x: auto;
@@ -446,12 +490,12 @@ a.menu-usuario-dados:hover {
 .tabela td {
   text-align: left;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--borda);
 }
 
 .tabela th {
-  background: var(--slate-100);
-  color: var(--slate-700);
+  background: var(--superficie-2);
+  color: var(--texto-2);
   font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -462,7 +506,7 @@ a.menu-usuario-dados:hover {
 }
 
 .tabela tbody tr:hover {
-  background: var(--slate-50);
+  background: var(--fundo);
 }
 
 .coluna-acoes {
@@ -483,7 +527,7 @@ a.menu-usuario-dados:hover {
 /* ---------- Formulários ---------- */
 
 .formulario {
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   padding: 1.5rem;
@@ -506,7 +550,7 @@ a.menu-usuario-dados:hover {
 .campo label {
   font-weight: 600;
   font-size: 0.9rem;
-  color: var(--slate-700);
+  color: var(--texto-2);
 }
 
 .obrigatorio {
@@ -516,11 +560,11 @@ a.menu-usuario-dados:hover {
 .campo input,
 .campo select {
   padding: 0.6rem 0.75rem;
-  border: 1px solid var(--slate-300);
+  border: 1px solid var(--borda-forte);
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  background: #fff;
+  background: var(--superficie);
 }
 
 .campo input:focus,
@@ -570,14 +614,14 @@ a.menu-usuario-dados:hover {
 }
 
 .cartao-resumo {
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   padding: 1.1rem 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  border-left: 5px solid var(--slate-800);
+  border-left: 5px solid var(--texto-2);
 }
 
 .cartao-titulo {
@@ -639,7 +683,7 @@ a.menu-usuario-dados:hover {
 
 .cartao-login,
 .cartao-erro {
-  background: #fff;
+  background: var(--superficie);
   border-radius: 14px;
   padding: 2rem;
   width: 100%;
@@ -651,7 +695,7 @@ a.menu-usuario-dados:hover {
   font-size: 2rem;
   font-weight: 700;
   text-align: center;
-  color: var(--slate-900);
+  color: var(--texto);
 }
 
 .subtitulo-login {
@@ -695,7 +739,7 @@ a.menu-usuario-dados:hover {
 
 .seletor {
   display: inline-flex;
-  background: var(--slate-200);
+  background: var(--borda);
   border-radius: 999px;
   padding: 3px;
 }
@@ -707,14 +751,14 @@ a.menu-usuario-dados:hover {
   border-radius: 999px;
   font-weight: 600;
   font-size: 0.85rem;
-  color: var(--slate-700);
+  color: var(--texto-2);
   cursor: pointer;
   font-family: inherit;
 }
 
 .seletor-botao.ativo {
-  background: #fff;
-  color: var(--slate-900);
+  background: var(--superficie);
+  color: var(--texto);
   box-shadow: var(--sombra);
 }
 
@@ -775,10 +819,10 @@ a.menu-usuario-dados:hover {
   align-items: center;
   gap: 0.5rem;
   padding: 0.3rem 0.5rem 0.3rem 0.8rem;
-  border: 1px solid var(--slate-300);
+  border: 1px solid var(--borda-forte);
   border-radius: 999px;
-  background: #fff;
-  color: var(--slate-700);
+  background: var(--superficie);
+  color: var(--texto-2);
   font: inherit;
   font-size: 0.85rem;
   font-weight: 600;
@@ -786,7 +830,7 @@ a.menu-usuario-dados:hover {
 }
 
 .historia-abrir:hover {
-  background: var(--slate-100);
+  background: var(--superficie-2);
 }
 
 .historia-abrir-acao {
@@ -855,7 +899,7 @@ a.menu-usuario-dados:hover {
 }
 
 .painel {
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   padding: 1.1rem 1.25rem 1rem;
@@ -895,13 +939,13 @@ a.menu-usuario-dados:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  border: 1px solid var(--slate-200);
-  background: #fff;
+  border: 1px solid var(--borda);
+  background: var(--superficie);
   border-radius: 999px;
   padding: 0.2rem 0.7rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--slate-700);
+  color: var(--texto-2);
   cursor: pointer;
   font-family: inherit;
 }
@@ -930,7 +974,7 @@ a.menu-usuario-dados:hover {
 }
 
 .grade {
-  stroke: var(--slate-200);
+  stroke: var(--borda);
   stroke-width: 1;
 }
 
@@ -941,7 +985,7 @@ a.menu-usuario-dados:hover {
 }
 
 .guia {
-  stroke: var(--slate-300);
+  stroke: var(--borda-forte);
   stroke-width: 1.5;
   stroke-dasharray: 4 3;
   pointer-events: none;
@@ -961,7 +1005,7 @@ a.menu-usuario-dados:hover {
 }
 
 .eixo-x.ativo {
-  fill: var(--slate-900);
+  fill: var(--texto);
   font-weight: 700;
 }
 
@@ -974,7 +1018,7 @@ a.menu-usuario-dados:hover {
 }
 
 .grupo-destaque {
-  fill: var(--slate-100);
+  fill: var(--superficie-2);
 }
 
 .barra {
@@ -1063,7 +1107,7 @@ a.menu-usuario-dados:hover {
   text-anchor: middle;
   font-size: 15px;
   font-weight: 700;
-  fill: var(--slate-900);
+  fill: var(--texto);
 }
 
 .donut-legenda {
@@ -1083,7 +1127,7 @@ a.menu-usuario-dados:hover {
 }
 
 .donut-legenda li.ativo {
-  background: var(--slate-100);
+  background: var(--superficie-2);
 }
 
 .donut-legenda-nome {
@@ -1126,7 +1170,7 @@ a.menu-usuario-dados:hover {
 .ranking-trilha {
   grid-area: trilha;
   height: 8px;
-  background: var(--slate-100);
+  background: var(--superficie-2);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -1176,11 +1220,11 @@ a.menu-usuario-dados:hover {
 }
 
 .metrica {
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   padding: 0.8rem 1rem;
-  border-left: 4px solid var(--slate-800);
+  border-left: 4px solid var(--texto-2);
 }
 
 .metrica span {
@@ -1227,7 +1271,7 @@ a.menu-usuario-dados:hover {
   min-width: 220px;
   max-width: 360px;
   padding: 0.55rem 0.8rem;
-  border: 1px solid var(--slate-300);
+  border: 1px solid var(--borda-forte);
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: inherit;
@@ -1287,7 +1331,7 @@ a.menu-usuario-dados:hover {
   align-items: center;
   gap: 1.25rem;
   flex-wrap: wrap;
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   border-left: 5px solid var(--verde);
@@ -1314,7 +1358,7 @@ a.menu-usuario-dados:hover {
 
 .perfil-dados strong {
   font-size: 1.15rem;
-  color: var(--slate-900);
+  color: var(--texto);
 }
 
 .perfil-rotulo {
@@ -1369,7 +1413,7 @@ a.menu-usuario-dados:hover {
   height: 30px;
   border-radius: 999px;
   overflow: hidden;
-  background: var(--slate-100);
+  background: var(--superficie-2);
   margin: 0.6rem 0 0.8rem;
 }
 
@@ -1414,7 +1458,7 @@ a.menu-usuario-dados:hover {
 }
 
 .modal {
-  background: #fff;
+  background: var(--superficie);
   border-radius: 14px;
   padding: 1.6rem 1.6rem 1.3rem;
   width: 100%;
@@ -1453,8 +1497,8 @@ a.menu-usuario-dados:hover {
 
 .modal-detalhes {
   margin: 0 0 1.1rem;
-  background: var(--slate-50);
-  border: 1px solid var(--slate-200);
+  background: var(--fundo);
+  border: 1px solid var(--borda);
   border-radius: 10px;
   padding: 0.5rem 0.9rem;
 }
@@ -1464,7 +1508,7 @@ a.menu-usuario-dados:hover {
   justify-content: space-between;
   gap: 1rem;
   padding: 0.35rem 0;
-  border-bottom: 1px solid var(--slate-200);
+  border-bottom: 1px solid var(--borda);
   font-size: 0.92rem;
 }
 
@@ -1504,7 +1548,7 @@ a.menu-usuario-dados:hover {
 }
 
 .janela {
-  background: #fff;
+  background: var(--superficie);
   border-radius: 14px;
   width: 100%;
   max-width: 500px;
@@ -1529,8 +1573,8 @@ a.menu-usuario-dados:hover {
 
 .janela-fechar {
   border: none;
-  background: var(--slate-100);
-  color: var(--slate-700);
+  background: var(--superficie-2);
+  color: var(--texto-2);
   width: 32px;
   height: 32px;
   border-radius: 50%;
@@ -1540,7 +1584,7 @@ a.menu-usuario-dados:hover {
 }
 
 .janela-fechar:hover {
-  background: var(--slate-200);
+  background: var(--borda);
 }
 
 .janela .formulario {
@@ -1573,7 +1617,7 @@ a.menu-usuario-dados:hover {
   display: flex;
   align-items: center;
   gap: 0.7rem;
-  background: #fff;
+  background: var(--superficie);
   border-radius: 10px;
   padding: 0.75rem 0.9rem;
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.25);
@@ -1802,7 +1846,7 @@ a.menu-usuario-dados:hover {
 .progresso {
   height: 10px;
   border-radius: 999px;
-  background: var(--slate-100);
+  background: var(--superficie-2);
   overflow: hidden;
 }
 
@@ -1846,8 +1890,8 @@ a.menu-usuario-dados:hover {
 }
 
 .etiqueta-neutra {
-  background: var(--slate-100);
-  color: var(--slate-700);
+  background: var(--superficie-2);
+  color: var(--texto-2);
 }
 
 .cartao-categoria {
@@ -1857,11 +1901,11 @@ a.menu-usuario-dados:hover {
 }
 .filtro-select {
   padding: 0.55rem 0.8rem;
-  border: 1px solid var(--slate-300);
+  border: 1px solid var(--borda-forte);
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: inherit;
-  background: #fff;
+  background: var(--superficie);
 }
 .progresso-celula {
   min-width: 190px;
@@ -1910,7 +1954,7 @@ a.menu-usuario-dados:hover {
 }
 
 .orcamento-cartao {
-  background: #fff;
+  background: var(--superficie);
   border-radius: var(--raio);
   box-shadow: var(--sombra);
   padding: 1rem 1.2rem;
@@ -1967,7 +2011,7 @@ a.menu-usuario-dados:hover {
   min-width: 200px;
   max-width: 320px;
   padding: 0.55rem 0.8rem;
-  border: 1px solid var(--slate-300);
+  border: 1px solid var(--borda-forte);
   border-radius: 8px;
   font-size: 0.95rem;
   font-family: inherit;
@@ -2031,8 +2075,8 @@ a.menu-usuario-dados:hover {
 }
 
 .lista-insights li {
-  background: var(--slate-50);
-  border: 1px solid var(--slate-200);
+  background: var(--fundo);
+  border: 1px solid var(--borda);
   border-radius: 10px;
   padding: 0.7rem 0.9rem;
 }
@@ -2059,7 +2103,7 @@ a.menu-usuario-dados:hover {
   }
 
   body {
-    background: #fff;
+    background: var(--superficie);
   }
 }
 
@@ -2076,4 +2120,111 @@ a.menu-usuario-dados:hover {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   vertical-align: middle;
+}
+
+/* ---------- Modo escuro: botao, alertas e etiquetas ---------- */
+
+.menu-tema {
+  margin-bottom: 0.5rem;
+}
+
+.tema-botao-flutuante {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 1px solid var(--borda-forte);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto-2);
+  box-shadow: var(--sombra);
+  cursor: pointer;
+}
+
+.tema-botao-flutuante:hover {
+  background: var(--superficie-2);
+}
+
+/* Cores pastel do modo claro viram tons translucidos, para nao "acender" a tela no escuro */
+:root[data-tema='escuro'] .botao-perigo {
+  border-color: rgba(225, 29, 72, 0.45);
+}
+
+:root[data-tema='escuro'] .botao-perigo:hover:not(:disabled) {
+  background: rgba(225, 29, 72, 0.15);
+}
+
+:root[data-tema='escuro'] .alerta-erro {
+  background: rgba(225, 29, 72, 0.14);
+  color: #fda4af;
+  border-color: rgba(225, 29, 72, 0.4);
+}
+
+:root[data-tema='escuro'] .alerta-sucesso {
+  background: rgba(16, 185, 129, 0.14);
+  color: #6ee7b7;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+:root[data-tema='escuro'] .etiqueta-baixo,
+:root[data-tema='escuro'] .etiqueta-ok,
+:root[data-tema='escuro'] .modal-icone {
+  background: rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+:root[data-tema='escuro'] .etiqueta-moderado,
+:root[data-tema='escuro'] .etiqueta-atencao {
+  background: rgba(217, 119, 6, 0.22);
+  color: #fcd34d;
+}
+
+:root[data-tema='escuro'] .etiqueta-alto,
+:root[data-tema='escuro'] .etiqueta-critico,
+:root[data-tema='escuro'] .etiqueta-excedido,
+:root[data-tema='escuro'] .modal-icone-perigo {
+  background: rgba(225, 29, 72, 0.22);
+  color: #fda4af;
+}
+
+@media print {
+  .menu-tema,
+  .tema-botao-flutuante {
+    display: none !important;
+  }
+}
+
+/* Modo claro/escuro e Sair lado a lado no rodape do menu (economiza altura); recolhido, um sobre o outro */
+.menu-acoes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.menu-acoes .menu-tema {
+  margin-bottom: 0;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.menu-acoes .menu-sair {
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.menu.recolhido .menu-acoes {
+  grid-template-columns: 1fr;
+}
+
+/* Campos de formulario sem fundo proprio acompanham o tema (baixa especificidade: nao mexe nos que ja tem estilo) */
+:where(:root[data-tema='escuro']) :where(input, select, textarea) {
+  background-color: var(--superficie);
+  color: var(--texto);
 }

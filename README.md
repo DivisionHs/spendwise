@@ -117,6 +117,12 @@ Cada cadastro corresponde a um controller do backend e permite **consultar, inse
 
 ![Página de erro 404](docs/screenshots/19-pagina-de-erro.png)
 
+**Modo escuro.** O botão **Escuro/Claro**, no rodapé do menu (e no canto da tela de login), alterna o tema do site. A escolha fica guardada no navegador e, sem escolha, vale a preferência do sistema. As cores do site são variáveis do CSS, então o modo escuro só redefine essas variáveis; a impressão sai sempre no tema claro.
+
+![Dashboard no modo escuro](docs/screenshots/22-modo-escuro-dashboard.png)
+
+![Extrato no modo escuro](docs/screenshots/23-modo-escuro-extrato.png)
+
 **Versão para celular.** No celular o menu lateral vira uma barra no topo com botão hambúrguer e uma gaveta que fecha ao navegar, ao tocar fora, no X ou com Esc. No computador, o menu pode ser recolhido para mostrar só os ícones.
 
 | Dashboard | Menu |

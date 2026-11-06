@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.tsx'
+import BotaoTema from './BotaoTema.tsx'
 import Icone, { type NomeIcone } from './Icone.tsx'
 
 // Estrutura das páginas internas, adaptada a cada tamanho de tela:
@@ -177,7 +178,9 @@ export default function Layout() {
               <div className="menu-usuario-email">{usuario?.email}</div>
             </div>
           </Link>
-          <button
+          <div className="menu-acoes">
+            <BotaoTema />
+            <button
             type="button"
             className="botao botao-contorno botao-bloco menu-sair"
             onClick={aoSair}
@@ -187,6 +190,7 @@ export default function Layout() {
             <Icone nome="sair" tamanho={18} />
             <span className="menu-texto">Sair</span>
           </button>
+          </div>
         </div>
       </aside>
       <main className="conteudo">
