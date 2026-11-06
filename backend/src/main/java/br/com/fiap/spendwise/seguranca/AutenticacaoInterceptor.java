@@ -57,7 +57,8 @@ public class AutenticacaoInterceptor implements HandlerInterceptor {
 
     private boolean publica(String metodo, String caminho) {
         String limpo = caminho.endsWith("/") ? caminho.substring(0, caminho.length() - 1) : caminho;
-        if ("GET".equalsIgnoreCase(metodo) && "/api/saude".equals(limpo)) {
+        // Monitores de disponibilidade (UptimeRobot) verificam com HEAD; o GET devolve o mesmo status
+        if (("GET".equalsIgnoreCase(metodo) || "HEAD".equalsIgnoreCase(metodo)) && "/api/saude".equals(limpo)) {
             return true; // verificacao de saude para o monitor de disponibilidade: nao devolve dado nenhum
         }
         return "POST".equalsIgnoreCase(metodo)

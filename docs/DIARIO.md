@@ -124,9 +124,9 @@ Registro cronológico do que foi feito, decidido e corrigido, com os problemas e
 
 **Causa.** O monitor consultava `GET /api/categorias-investimento`, uma rota que antes era aberta e passou a exigir token com o login por token. Sem token, a API responde 401, e o monitor entende qualquer resposta de erro como queda. O servidor estava vivo: o problema foi consequência da mudança de segurança.
 
-**Correção.** Nova rota pública `GET /api/saude`, que não devolve dado nenhum: só responde 200 se a API e o banco atendem uma consulta simples (`select 1`), ou 503 se o banco falhar. Como a consulta passa pelo banco, o monitor continua mantendo o Supabase ativo. O monitor foi apontado para essa rota. Dois testes novos (60 no total).
+**Correção.** Nova rota pública `GET /api/saude`, que não devolve dado nenhum: só responde 200 se a API e o banco atendem uma consulta simples (`select 1`), ou 503 se o banco falhar. Como a consulta passa pelo banco, o monitor continua mantendo o Supabase ativo. O monitor foi apontado para essa rota. Dois testes novos (60 no total). **Segunda falha, achada no registro do incidente:** o UptimeRobot verifica com o método `HEAD` e não com `GET`, e a rota só liberava `GET`, então o monitor continuou recebendo 401. A correção liberou também o `HEAD` na rota de saúde (e só nela), com mais dois testes (62 no total).
 
-**Lição.** Monitor de disponibilidade deve usar uma rota pública e estável, e não uma rota de negócio. Ao fechar a API com token, listar tudo o que a consultava sem token (monitor, scripts de teste).
+**Lição.** Monitor de disponibilidade deve usar uma rota pública e estável, e não uma rota de negócio. Ao fechar a API com token, listar tudo o que a consultava sem token (monitor, scripts de teste). E conferir o método que o monitor usa: testar a rota com `curl -I` (HEAD) além do GET antes de apontar o monitor.
 
 ### Noite: validação e limpeza de dados pessoais
 

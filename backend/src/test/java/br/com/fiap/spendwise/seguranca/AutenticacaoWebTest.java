@@ -3,6 +3,7 @@ package br.com.fiap.spendwise.seguranca;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.head;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -186,5 +187,16 @@ class AutenticacaoWebTest {
         mvc.perform(get("/api/saude"))
                 .andExpect(status().isServiceUnavailable())
                 .andExpect(jsonPath("$.status").value("indisponivel"));
+    }
+
+    @Test
+    void saudeTambemAceitaHeadComoOsMonitoresDeDisponibilidade() throws Exception {
+        when(jdbc.queryForObject("select 1", Integer.class)).thenReturn(1);
+        mvc.perform(head("/api/saude")).andExpect(status().isOk());
+    }
+
+    @Test
+    void headEmOutrasRotasContinuaExigindoToken() throws Exception {
+        mvc.perform(head("/api/receitas").param("idUsuario", "1")).andExpect(status().isUnauthorized());
     }
 }
